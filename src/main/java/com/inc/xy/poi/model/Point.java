@@ -1,7 +1,5 @@
 package com.inc.xy.poi.model;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,11 +21,11 @@ public class Point {
 
 	@Digits(integer = 6, fraction = 0, message = "{message.point.invalid.coordinate}")
 	@Range(min = 0, message = "{message.point.invalid.coordinate}")
-	private BigDecimal xCoordinate;
+	private Double xCoordinate;
 
 	@Digits(integer = 6, fraction = 0, message = "{message.point.invalid.coordinate}")
 	@Range(min = 0, message = "{message.point.invalid.coordinate}")
-	private BigDecimal yCoordinate;
+	private Double yCoordinate;
 
 	public Point() {
 		super();
@@ -51,20 +49,35 @@ public class Point {
 		this.name = name;
 	}
 
-	public BigDecimal getxCoordinate() {
+	public Double getxCoordinate() {
 		return xCoordinate;
 	}
 
-	public BigDecimal getyCoordinate() {
+	public Double getyCoordinate() {
 		return yCoordinate;
 	}
 
-	public void setxCoordinate(BigDecimal xCoordinate) {
+	public void setxCoordinate(Double xCoordinate) {
 		this.xCoordinate = xCoordinate;
 	}
 
-	public void setyCoordinate(BigDecimal yCoordinate) {
+	public void setyCoordinate(Double yCoordinate) {
 		this.yCoordinate = yCoordinate;
 	}
 
+	public static boolean isValid(Point point) {
+		return point != null && point.getxCoordinate() != null && point.getyCoordinate() != null;
+	}
+
+	public Double getDistanceFrom(Point anotherPoint) {
+		Double distance = null;
+
+		if (isValid(this) && isValid(anotherPoint)) {
+			Double deltaX = Math.pow(xCoordinate - (anotherPoint.getxCoordinate()), 2.0);
+			Double deltaY = Math.pow(yCoordinate - (anotherPoint.getyCoordinate()), 2.0);
+			distance = Math.sqrt(deltaX + deltaY);
+		}
+
+		return distance;
+	}
 }
