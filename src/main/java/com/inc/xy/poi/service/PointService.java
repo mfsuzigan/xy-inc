@@ -3,6 +3,7 @@ package com.inc.xy.poi.service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -28,20 +29,27 @@ public class PointService {
 	}
 
 	public Point save(Point point) {
-		repository.save(point);
-		return point;
+		validate(point);
+		return repository.save(point);
 	}
 
-	public List<Point> findInRadius(Point point, BigDecimal length) {
+	public List<Point> findInRadius(Point center, BigDecimal radiusLength) {
+		validate(center);
+		return findAll().stream().filter(point -> point.getDistanceFrom(center).compareTo(radiusLength) <= 0)
+				.collect(Collectors.toList());
+	}
 
-		validator.validate(point);
+	public Point findById(Long id) {
 
-		return null;
+		if (id == null) {
+			throw new IllegalArgumentException("Identificador de ponto de interesse obrigatório");
+		}
+
+		return repository.findOne(id);
 	}
 
 	private void validate(Point point) {
 		Set<ConstraintViolation<Point>> constraintViolations = validator.validate(point);
-
 		if (!constraintViolations.isEmpty()) {
 			throw new InvalidPointException(constraintViolations);
 		}

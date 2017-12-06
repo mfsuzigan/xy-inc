@@ -32,15 +32,14 @@ public class PointController {
 
 	@RequestMapping(method = RequestMethod.GET, path = "/{id}")
 	public Point findById(@PathVariable(name = "id") Long id) {
-		return new Point();
+		return service.findById(id);
 
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public Point save(@Valid @RequestBody Point point) {
-		// return ResponseEntity.created(location)
-		return point;
+		return service.save(point);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "/radius")
