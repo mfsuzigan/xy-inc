@@ -1,5 +1,8 @@
 package com.inc.xy.poi.model;
 
+import java.math.BigDecimal;
+import java.util.function.BiFunction;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,14 +24,19 @@ public class Point {
 
 	@Digits(integer = 6, fraction = 0, message = "{message.point.invalid.coordinate}")
 	@Range(min = 0, message = "{message.point.invalid.coordinate}")
-	private Double xCoordinate;
+	private BigDecimal xCoordinate;
 
 	@Digits(integer = 6, fraction = 0, message = "{message.point.invalid.coordinate}")
 	@Range(min = 0, message = "{message.point.invalid.coordinate}")
-	private Double yCoordinate;
+	private BigDecimal yCoordinate;
 
 	public Point() {
-		super();
+	}
+
+	public Point(String name, BigDecimal xCoordinate, BigDecimal yCoordinate) {
+		this.name = name;
+		this.xCoordinate = xCoordinate;
+		this.yCoordinate = yCoordinate;
 	}
 
 	@Id
@@ -49,33 +57,38 @@ public class Point {
 		this.name = name;
 	}
 
-	public Double getxCoordinate() {
+	public BigDecimal getxCoordinate() {
 		return xCoordinate;
 	}
 
-	public Double getyCoordinate() {
+	public BigDecimal getyCoordinate() {
 		return yCoordinate;
 	}
 
-	public void setxCoordinate(Double xCoordinate) {
+	public void setxCoordinate(BigDecimal xCoordinate) {
 		this.xCoordinate = xCoordinate;
 	}
 
-	public void setyCoordinate(Double yCoordinate) {
+	public void setyCoordinate(BigDecimal yCoordinate) {
 		this.yCoordinate = yCoordinate;
 	}
 
-	public static boolean isValid(Point point) {
+	public static boolean hasCoordinates(Point point) {
 		return point != null && point.getxCoordinate() != null && point.getyCoordinate() != null;
 	}
 
 	public Double getDistanceFrom(Point anotherPoint) {
 		Double distance = null;
 
-		if (isValid(this) && isValid(anotherPoint)) {
-			Double deltaX = Math.pow(xCoordinate - (anotherPoint.getxCoordinate()), 2.0);
-			Double deltaY = Math.pow(yCoordinate - (anotherPoint.getyCoordinate()), 2.0);
-			distance = Math.sqrt(deltaX + deltaY);
+		if (hasCoordinates(this) && hasCoordinates(anotherPoint)) {
+
+			BiFunction<BigDecimal, BigDecimal, Double> squaredDifference = (n1, n2) -> {
+				Double delta = n1.doubleValue() - n2.doubleValue();
+				return delta * delta;
+			};
+
+			distance = Math.sqrt(squaredDifference.apply(xCoordinate, anotherPoint.getxCoordinate())
+					+ squaredDifference.apply(yCoordinate, anotherPoint.getyCoordinate()));
 		}
 
 		return distance;
