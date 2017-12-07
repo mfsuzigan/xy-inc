@@ -22,16 +22,17 @@ public class MessageUtils {
 		accessor = new MessageSourceAccessor(messageSource, Locale.getDefault());
 	}
 
-	public String get(String code) {
-		return accessor.getMessage(code);
+	public String get(String key) {
+		return accessor.getMessage(key);
 	}
 
-	public String get(String code, Object... params) {
-		if (params == null) {
-			this.get(code);
-		}
+	public String get(String key, Object... params) {
 
-		return accessor.getMessage(code, params);
+		if (params == null) {
+			return get(key);
+		} else {
+			return accessor.getMessage(key, params);
+		}
 	}
 
 }

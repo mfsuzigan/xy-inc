@@ -11,13 +11,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Range;
+import org.springframework.hateoas.ResourceSupport;
 
 import com.inc.xy.poi.util.PointMathUtils;
 
 @Entity
-public class Point {
+public class Point extends ResourceSupport {
 
-	private Long id;
+	private Long pid;
 
 	@NotNull(message = "{msg.point.name.required}")
 	@Size(min = 1, message = "{msg.point.name.required}")
@@ -32,6 +33,7 @@ public class Point {
 	private BigDecimal yCoordinate;
 
 	public Point() {
+		super();
 	}
 
 	public Point(String name, BigDecimal xCoordinate, BigDecimal yCoordinate) {
@@ -41,17 +43,17 @@ public class Point {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Long getId() {
-		return id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Long getPid() {
+		return pid;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setPid(Long pid) {
+		this.pid = pid;
 	}
 
 	public void setName(String name) {
@@ -76,9 +78,9 @@ public class Point {
 
 	@Override
 	public String toString() {
-		String xCoord = xCoordinate == null ? null : xCoordinate.toString();
-		String yCoord = xCoordinate == null ? null : yCoordinate.toString();
-		return String.format("['%s', %s, %s]", name, xCoord, yCoord);
+		String xCoordStr = xCoordinate == null ? null : xCoordinate.toString();
+		String yCoordStr = xCoordinate == null ? null : yCoordinate.toString();
+		return String.format("['%s', (%s, %s)]", name, xCoordStr, yCoordStr);
 	}
 
 	public boolean hasCoordinates() {

@@ -40,4 +40,5 @@ public class MethodArgumentNotValidExceptionHandler extends ResponseEntityExcept
 
 		return new ResponseEntity<>(validation, HttpStatus.BAD_REQUEST);
 	}
+
 }

@@ -7,6 +7,14 @@ public class ValidationDTO {
 
 	private List<ValidationErrorDTO> validationErrors;
 
+	public ValidationDTO() {
+		super();
+	}
+
+	public ValidationDTO(ValidationErrorDTO validationError) {
+		addError(validationError);
+	}
+
 	public List<ValidationErrorDTO> getErrors() {
 		return validationErrors;
 	}
