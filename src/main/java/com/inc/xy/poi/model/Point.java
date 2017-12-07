@@ -18,16 +18,20 @@ import com.inc.xy.poi.util.PointMathUtils;
 @Entity
 public class Point extends ResourceSupport {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long pid;
 
 	@NotNull(message = "{msg.point.name.required}")
 	@Size(min = 1, message = "{msg.point.name.required}")
 	private String name;
 
+	@NotNull(message = "{msg.null.x.coordinate}")
 	@Digits(integer = 6, fraction = 0, message = "{msg.invalid.coordinate}")
 	@Range(min = 0, message = "{msg.invalid.coordinate}")
 	private BigDecimal xCoordinate;
 
+	@NotNull(message = "{msg.null.y.coordinate}")
 	@Digits(integer = 6, fraction = 0, message = "{msg.invalid.coordinate}")
 	@Range(min = 0, message = "{msg.invalid.coordinate}")
 	private BigDecimal yCoordinate;
@@ -42,8 +46,6 @@ public class Point extends ResourceSupport {
 		this.yCoordinate = yCoordinate;
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getPid() {
 		return pid;
 	}

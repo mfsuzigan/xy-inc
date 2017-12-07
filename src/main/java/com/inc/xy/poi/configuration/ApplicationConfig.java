@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EnableJpaRepositories("com.inc.xy.poi.repository")
 @ComponentScan({ "com.inc.xy.poi.controller", "com.inc.xy.poi.service", "com.inc.xy.poi.exception",
-		"com.inc.xy.poi.configuration", "com.inc.xy.poi.util" })
+		"com.inc.xy.poi.configuration", "com.inc.xy.poi.util", "com.inc.xy.poi.annotation", "com.inc.xy.poi.aspect" })
 @EntityScan("com.inc.xy.poi.model")
 public class ApplicationConfig {
 
