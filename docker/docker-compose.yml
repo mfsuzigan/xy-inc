@@ -1,0 +1,27 @@
+version: '3'
+services:
+    poi:
+        build:
+            dockerfile: ./poi.dockerfile
+            context: .
+        image: mfsuzigan/poi
+        container_name: poi
+        ports:
+            - "8080:8080"
+        networks:
+            - poi-network
+        depends_on:
+            - "mysql"
+    mysql:
+        build:
+            dockerfile: ./mysql.dockerfile
+            context: .
+        image: mfsuzigan/mysql
+        container_name: mysql
+        ports:
+            - "3306:3306"
+        networks:
+            - poi-network
+networks:
+    poi-network:
+        driver: bridge
