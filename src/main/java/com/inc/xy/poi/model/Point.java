@@ -19,7 +19,7 @@ import com.inc.xy.poi.util.PointMathUtils;
 public class Point extends ResourceSupport {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long pid;
 
 	@NotNull(message = "{msg.point.name.required}")
@@ -76,6 +76,60 @@ public class Point extends ResourceSupport {
 
 	public void setyCoordinate(BigDecimal yCoordinate) {
 		this.yCoordinate = yCoordinate;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((pid == null) ? 0 : pid.hashCode());
+		result = prime * result + ((xCoordinate == null) ? 0 : xCoordinate.hashCode());
+		result = prime * result + ((yCoordinate == null) ? 0 : yCoordinate.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Point other = (Point) obj;
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		if (pid == null) {
+			if (other.pid != null) {
+				return false;
+			}
+		} else if (!pid.equals(other.pid)) {
+			return false;
+		}
+		if (xCoordinate == null) {
+			if (other.xCoordinate != null) {
+				return false;
+			}
+		} else if (!xCoordinate.equals(other.xCoordinate)) {
+			return false;
+		}
+		if (yCoordinate == null) {
+			if (other.yCoordinate != null) {
+				return false;
+			}
+		} else if (!yCoordinate.equals(other.yCoordinate)) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override

@@ -30,7 +30,7 @@ public class SelfLinkAspect {
 	@Autowired
 	private MessageUtils messageUtils;
 
-	@AfterReturning(value = "@annotation(com.inc.xy.poi.annotation.SelfLink)", returning = "methodReturnValue")
+	@AfterReturning(value = "@annotation(com.inc.xy.poi.annotation.SelfLink)", returning = "rawMethodReturnValue")
 	public void addSelfLinks(JoinPoint joinPoint, Object rawMethodReturnValue) {
 
 		if (joinPoint.getSignature() instanceof MethodSignature) {
@@ -86,7 +86,6 @@ public class SelfLinkAspect {
 					returnValue.add(linkTo(controllerIdMethod, entityId).withSelfRel());
 				}
 			}
-
 		}
 	}
 
@@ -95,7 +94,7 @@ public class SelfLinkAspect {
 		Method entityIdMethod = null;
 
 		if (CollectionUtils.isNotEmpty(returnValues)) {
-			entityIdMethod = returnValues.stream().findAny().orElse(null).getClass()
+			entityIdMethod = returnValues.stream().findAny().orElse(new ResourceSupport()).getClass()
 					.getDeclaredMethod(selfLinkAnnotation.entityIdMethodName());
 		}
 

@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -20,7 +19,7 @@ public class JsonParseExceptionHandler {
 	@Autowired
 	private MessageUtils messageUtils;
 
-	@ExceptionHandler(value = { HttpMessageNotReadableException.class })
+	@ExceptionHandler(value = { JsonParseException.class })
 	public ResponseEntity<ValidationDTO> handleJsonParse(JsonParseException e) throws IOException {
 
 		return new ResponseEntity<>(

@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>inc.xy</groupId>
 	<artifactId>poi-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>Points of Interest API</name>
-	<description>Provides a set of webservices concerning geographical points of interest</description>
+	<name>Pontos de Interesse - POI API</name>
+	<version>1.0.0-RELEASE</version>
+	<description>API para cadastro e busca de Pontos de Interesse</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

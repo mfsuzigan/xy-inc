@@ -33,7 +33,7 @@ public class PointServiceTest {
 	private Validator validator;
 
 	@Mock
-	private PointRepository pointRepository;
+	private PointRepository repository;
 
 	@Mock
 	private MessageUtils messageUtils;
@@ -49,7 +49,8 @@ public class PointServiceTest {
 	@Before
 	public void before() {
 		MockitoAnnotations.initMocks(this);
-		Arrays.asList("msg.null.point").forEach(this::prepareMessageInMock);
+		Arrays.asList("msg.null.point", "msg.invalid.distance", "msg.point.id.required")
+				.forEach(this::prepareMessageInMock);
 	}
 
 	@Test
@@ -60,18 +61,14 @@ public class PointServiceTest {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void saveTest_Failure_ConstraintViolation() {
 		expectedException.expect(ValidationException.class);
-		Set<ConstraintViolation<Point>> constraintViolation = Mockito.mock(Set.class);
-		Point invalidPoint = new Point(null, null, null);
-		Mockito.when(validator.validate(invalidPoint)).thenReturn(constraintViolation);
-		service.save(invalidPoint);
+		service.save(buildInvalidPoint());
 	}
 
 	@Test
 	public void saveTest_Success() {
-		Mockito.when(pointRepository.save(mockPoint)).thenReturn(mockPoint);
+		Mockito.when(repository.save(mockPoint)).thenReturn(mockPoint);
 		Assert.assertEquals(service.save(mockPoint), mockPoint);
 	}
 
@@ -85,7 +82,70 @@ public class PointServiceTest {
 		List<Point> pointsInRadius = service.findInRadius(new Point("center", BigDecimal.ZERO, BigDecimal.ZERO),
 				new BigDecimal(3));
 		Assert.assertTrue(pointsInRadius.containsAll(Arrays.asList(pointInRange1, pointInRange2)));
-		Assert.assertFalse(pointsInRadius.containsAll(Arrays.asList(pointOutOfRange)));
+		Assert.assertFalse(pointsInRadius.contains(pointOutOfRange));
+	}
+
+	@Test
+	public void findInRadiusTest_Failure_InvalidPoint() {
+		expectedException.expect(ValidationException.class);
+		service.findInRadius(new Point(null, BigDecimal.ZERO, null), new BigDecimal(10));
+	}
+
+	@Test
+	public void findInRadiusTest_Failure_InvalidPoint2() {
+		expectedException.expect(ValidationException.class);
+		service.findInRadius(new Point(null, null, BigDecimal.ZERO), new BigDecimal(10));
+	}
+
+	@Test
+	public void findInRadiusTest_Failure_NegativeDistance() {
+		expectedException.expect(ValidationException.class);
+		expectedException.expectMessage(validationMessages.getString("msg.invalid.distance"));
+		service.findInRadius(new Point("center", BigDecimal.ZERO, BigDecimal.ZERO), new BigDecimal("-1"));
+	}
+
+	@Test
+	public void findInRadiusTest_Failure_NullDistance() {
+		expectedException.expect(ValidationException.class);
+		expectedException.expectMessage(validationMessages.getString("msg.invalid.distance"));
+		service.findInRadius(new Point("center", BigDecimal.ZERO, BigDecimal.ZERO), null);
+	}
+
+	@Test
+	public void findAllTest_Success() {
+		Mockito.when(repository.findAll()).thenReturn(Arrays.asList(mockPoint));
+		Assert.assertFalse(service.findAll().isEmpty());
+	}
+
+	@Test
+	public void findByIdTest_Failure_NullId() {
+		expectedException.expect(IllegalArgumentException.class);
+		expectedException.expectMessage(validationMessages.getString("msg.point.id.required"));
+		service.findById(null);
+	}
+
+	@Test
+	public void findByIdTest_Success() {
+		Mockito.when(repository.findOne(Mockito.anyLong())).thenReturn(mockPoint);
+		Assert.assertEquals(service.findById(1L), mockPoint);
+	}
+
+	@Test
+	public void deleteTest_Success() {
+		service.delete(1L);
+	}
+
+	@Test
+	public void deleteTest_Success_NullId() {
+		service.delete(null);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Point buildInvalidPoint() {
+		Set<ConstraintViolation<Point>> constraintViolation = Mockito.mock(Set.class);
+		Point invalidPoint = new Point(null, null, null);
+		Mockito.when(validator.validate(invalidPoint)).thenReturn(constraintViolation);
+		return invalidPoint;
 	}
 
 	private void prepareMessageInMock(String messageKey) {
