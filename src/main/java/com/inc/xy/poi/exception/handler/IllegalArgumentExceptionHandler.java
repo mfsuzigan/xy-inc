@@ -11,12 +11,23 @@ import com.inc.xy.poi.dto.ValidationDTO;
 import com.inc.xy.poi.dto.ValidationErrorDTO;
 import com.inc.xy.poi.util.MessageUtils;
 
+/**
+ * Intercepta {@link IllegalArgumentException}s para construcao de
+ * {@link ResponseEntity} tratadas.
+ * 
+ * @author Michel F. Suzigan
+ *
+ */
 @ControllerAdvice
 public class IllegalArgumentExceptionHandler {
 
 	@Autowired
 	private MessageUtils messageUtils;
 
+	/**
+	 * Trata a {@link ResponseEntity} para os diferentes casos de
+	 * {@link IllegalArgumentException}s lancadas
+	 */
 	@ExceptionHandler(value = { IllegalArgumentException.class })
 	public ResponseEntity<ValidationDTO> handleIllegalArgument(IllegalArgumentException e) {
 

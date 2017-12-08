@@ -18,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.inc.xy.poi.exception.ValidationException;
 import com.inc.xy.poi.model.Point;
@@ -44,19 +45,19 @@ public class PointServiceTest {
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
 
-	private ResourceBundle validationMessages = ResourceBundle.getBundle("ValidationMessages");
+	private ResourceBundle testMessages = ResourceBundle.getBundle("ValidationMessages");
 
 	@Before
 	public void before() {
 		MockitoAnnotations.initMocks(this);
-		Arrays.asList("msg.null.point", "msg.invalid.distance", "msg.point.id.required")
+		Arrays.asList("msg.null.point", "msg.invalid.distance", "msg.point.id.required", "msg.point.not.found")
 				.forEach(this::prepareMessageInMock);
 	}
 
 	@Test
 	public void saveTest_Failure_NullPoint() {
 		expectedException.expect(ValidationException.class);
-		expectedException.expectMessage(validationMessages.getString("msg.null.point"));
+		expectedException.expectMessage(testMessages.getString("msg.null.point"));
 		service.save(null);
 	}
 
@@ -92,22 +93,16 @@ public class PointServiceTest {
 	}
 
 	@Test
-	public void findInRadiusTest_Failure_InvalidPoint2() {
-		expectedException.expect(ValidationException.class);
-		service.findInRadius(new Point(null, null, BigDecimal.ZERO), new BigDecimal(10));
-	}
-
-	@Test
 	public void findInRadiusTest_Failure_NegativeDistance() {
 		expectedException.expect(ValidationException.class);
-		expectedException.expectMessage(validationMessages.getString("msg.invalid.distance"));
+		expectedException.expectMessage(testMessages.getString("msg.invalid.distance"));
 		service.findInRadius(new Point("center", BigDecimal.ZERO, BigDecimal.ZERO), new BigDecimal("-1"));
 	}
 
 	@Test
 	public void findInRadiusTest_Failure_NullDistance() {
 		expectedException.expect(ValidationException.class);
-		expectedException.expectMessage(validationMessages.getString("msg.invalid.distance"));
+		expectedException.expectMessage(testMessages.getString("msg.invalid.distance"));
 		service.findInRadius(new Point("center", BigDecimal.ZERO, BigDecimal.ZERO), null);
 	}
 
@@ -120,7 +115,7 @@ public class PointServiceTest {
 	@Test
 	public void findByIdTest_Failure_NullId() {
 		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage(validationMessages.getString("msg.point.id.required"));
+		expectedException.expectMessage(testMessages.getString("msg.point.id.required"));
 		service.findById(null);
 	}
 
@@ -140,6 +135,14 @@ public class PointServiceTest {
 		service.delete(null);
 	}
 
+	@Test
+	public void deleteTest_Failure_PointNotFound() {
+		expectedException.expect(IllegalArgumentException.class);
+		expectedException.expectMessage(testMessages.getString("msg.point.not.found"));
+		Mockito.doThrow(EmptyResultDataAccessException.class).when(repository).delete(1L);
+		service.delete(1L);
+	}
+
 	@SuppressWarnings("unchecked")
 	private Point buildInvalidPoint() {
 		Set<ConstraintViolation<Point>> constraintViolation = Mockito.mock(Set.class);
@@ -149,6 +152,6 @@ public class PointServiceTest {
 	}
 
 	private void prepareMessageInMock(String messageKey) {
-		Mockito.when(messageUtils.get(messageKey)).thenReturn(validationMessages.getString(messageKey));
+		Mockito.when(messageUtils.get(messageKey)).thenReturn(testMessages.getString(messageKey));
 	}
 }

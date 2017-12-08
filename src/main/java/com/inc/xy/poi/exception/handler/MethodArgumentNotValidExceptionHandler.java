@@ -17,12 +17,23 @@ import com.inc.xy.poi.dto.ValidationDTO;
 import com.inc.xy.poi.dto.ValidationErrorDTO;
 import com.inc.xy.poi.util.MessageUtils;
 
+/**
+ * Intercepta {@link MethodArgumentNotValidException}s para construcao de
+ * {@link ResponseEntity} tratadas.
+ * 
+ * @author Michel F. Suzigan
+ *
+ */
 @ControllerAdvice
 public class MethodArgumentNotValidExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@Autowired
 	private MessageUtils messageUtils;
 
+	/**
+	 * Trata a {@link ResponseEntity} para diferentes casos de
+	 * {@link MethodArgumentNotValidException}s lancadas
+	 */
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException e,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {

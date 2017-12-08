@@ -15,12 +15,26 @@ import com.inc.xy.poi.dto.ValidationErrorDTO;
 import com.inc.xy.poi.exception.ValidationException;
 import com.inc.xy.poi.util.MessageUtils;
 
+/**
+ * Intercepta {@link ValidationException}s para construcao de
+ * {@link ResponseEntity} tratadas
+ * 
+ * @author Michel F. Suzigan
+ *
+ */
 @ControllerAdvice
 public class ValidationExceptionHandler {
 
 	@Autowired
 	private MessageUtils messageUtils;
 
+	/**
+	 * Trata a {@link ResponseEntity} para diferentes casos de
+	 * {@link ValidationException}s lancadas
+	 * 
+	 * @param e
+	 *            Excecao lancada
+	 */
 	@ExceptionHandler(value = { ValidationException.class })
 	private ResponseEntity<ValidationDTO> handleInvalidPoint(ValidationException e) {
 

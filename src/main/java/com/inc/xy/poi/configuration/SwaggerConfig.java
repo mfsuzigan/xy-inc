@@ -13,6 +13,14 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * Configura o Swagger ({@link https://swagger.io}) para aplicacao, provendo
+ * documentacao e ferramentas para teste disponiveis em
+ * /api-poi/{versao}/swagger-ui.html
+ * 
+ * @author Michel F. Suzigan
+ *
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {

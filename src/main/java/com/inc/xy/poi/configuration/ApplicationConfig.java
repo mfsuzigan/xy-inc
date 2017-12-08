@@ -8,15 +8,26 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+/**
+ * Configura o escaneamento e a inicializacao do Spring Boot para a aplicacao
+ * 
+ * @author Michel F. Suzigan
+ *
+ */
 @SpringBootApplication
 @EnableJpaRepositories("com.inc.xy.poi.repository")
-@ComponentScan({ "com.inc.xy.poi.*"})
+@ComponentScan({ "com.inc.xy.poi.*" })
 public class ApplicationConfig {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApplicationConfig.class, args);
 	}
 
+	/**
+	 * Cria o bean para recuperacao de mensagens do bundle de
+	 * ValidationMessages.properties
+	 * 
+	 */
 	@Bean(name = "messageSource")
 	public MessageSource messageSource() {
 		ReloadableResourceBundleMessageSource reloadableResourceBundleMessageSource = new ReloadableResourceBundleMessageSource();

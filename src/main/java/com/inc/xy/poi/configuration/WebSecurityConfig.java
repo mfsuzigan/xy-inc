@@ -8,6 +8,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+/**
+ * Configura a seguranca na aplicacao, requerendo para todas as requisicoes
+ * autenticacao BASIC<br/>
+ * <br/>
+ * Observacao: a protecao contra CSRF foi desabilitada para efeito de
+ * simplicidade na implementacao
+ * 
+ * @author Michel F. Suzigan
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {

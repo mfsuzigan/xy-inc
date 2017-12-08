@@ -15,6 +15,23 @@ import org.springframework.hateoas.ResourceSupport;
 
 import com.inc.xy.poi.util.PointMathUtils;
 
+/**
+ * Abstracao correspondente a um ponto qualquer (de interesse ou ponto
+ * imaginario utilizado no calculo de distancias entre pontos de interesse).
+ * Observacoes:</br>
+ * </br>
+ * 
+ * 1. Utilizada Bean Validation para simplificar verificoes de restricoes das
+ * propriedades;<br/>
+ * </br>
+ * 2. {@link Point} deriva de {@link ResourceSupport} para implementacao do
+ * Spring HATEOAS, permitindo o nivel de maturidade de Richardson mais elevado
+ * para API (ver
+ * {@link https://martinfowler.com/articles/richardsonMaturityModel.html})
+ * 
+ * @author Michel F. Suzigan
+ *
+ */
 @Entity
 public class Point extends ResourceSupport {
 
@@ -139,10 +156,21 @@ public class Point extends ResourceSupport {
 		return String.format("['%s', (%s, %s)]", name, xCoordStr, yCoordStr);
 	}
 
+	/**
+	 * Retorna <code>true</code> se as coordenadas do {@link Point} em questao
+	 * sao ambas nao-nulas
+	 * 
+	 */
 	public boolean hasCoordinates() {
 		return xCoordinate != null && yCoordinate != null;
 	}
 
+	/**
+	 * Retorna a distancia entre o {@link Point} em questao e outro informado
+	 * 
+	 * @param anotherPoint
+	 *            Outro ponto de referencia
+	 */
 	public BigDecimal getDistanceFrom(Point anotherPoint) {
 		return PointMathUtils.getDistanceBetween(this, anotherPoint);
 	}

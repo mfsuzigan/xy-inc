@@ -13,12 +13,23 @@ import com.inc.xy.poi.dto.ValidationDTO;
 import com.inc.xy.poi.dto.ValidationErrorDTO;
 import com.inc.xy.poi.util.MessageUtils;
 
+/**
+ * Intercepta {@link JsonParseException}s para construcao de
+ * {@link ResponseEntity} tratadas.
+ * 
+ * @author Michel F. Suzigan
+ *
+ */
 @ControllerAdvice
 public class JsonParseExceptionHandler {
 
 	@Autowired
 	private MessageUtils messageUtils;
 
+	/**
+	 * Trata a {@link ResponseEntity} para casos de {@link JsonParseException}s
+	 * lancadas
+	 */
 	@ExceptionHandler(value = { JsonParseException.class })
 	public ResponseEntity<ValidationDTO> handleJsonParse(JsonParseException e) throws IOException {
 

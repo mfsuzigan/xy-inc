@@ -17,6 +17,12 @@ import com.inc.xy.poi.model.Point;
 import com.inc.xy.poi.repository.PointRepository;
 import com.inc.xy.poi.util.MessageUtils;
 
+/**
+ * Operacoes de negocio relacionadas a pontos de interesse
+ * 
+ * @author Michel F. Suzigan
+ *
+ */
 @Service
 public class PointService {
 
@@ -29,16 +35,35 @@ public class PointService {
 	@Autowired
 	private MessageUtils messageUtils;
 
+	/**
+	 * Lista todos os pontos de interesse cadastrados
+	 * 
+	 */
 	public List<Point> findAll() {
 		return repository.findAll();
 	}
 
+	/**
+	 * Cadastra um ponto de interesse valido (com nome e coordenadas inteiras
+	 * nao-negativas)
+	 * 
+	 * @param point
+	 *            Ponto de interesse
+	 */
 	public Point save(Point point) {
 		validatePointForNullity(point);
 		validatePointConstraints(point);
 		return repository.save(point);
 	}
 
+	/**
+	 * Exclui um ponto de interesse se for informado um identificador. Se o
+	 * identificador informado nao corresponder a um registro, lanca uma
+	 * {@link IllegalArgumentException}
+	 * 
+	 * @param id
+	 *            Identificador do ponto de interesse
+	 */
 	public void delete(Long id) {
 
 		if (id != null) {
@@ -51,6 +76,16 @@ public class PointService {
 		}
 	}
 
+	/**
+	 * Dado um ponto de referencia P valido (com coordenadas) e uma distancia D
+	 * (nao-negativa), retorna todos os pontos de interesse dentro de uma
+	 * circunferencia com centro em P e raio igual a D
+	 * 
+	 * @param center
+	 *            Ponto de referencia
+	 * @param radiusLength
+	 *            Distancia
+	 */
 	public List<Point> findInRadius(Point center, BigDecimal radiusLength) {
 		validatePointForNullity(center);
 		validatePointCoordinates(center);
@@ -63,6 +98,12 @@ public class PointService {
 				.collect(Collectors.toList());
 	}
 
+	/**
+	 * Retorna, se houver, um ponto de interesse com o identificador informado
+	 * 
+	 * @param id
+	 *            Identificador do ponto de interesse
+	 */
 	public Point findById(Long id) {
 
 		if (id == null) {
@@ -72,6 +113,11 @@ public class PointService {
 		return repository.findOne(id);
 	}
 
+	/**
+	 * Valida a nulidade do ponto informado, lancando uma
+	 * {@link ValidationException} em caso de falha
+	 * 
+	 */
 	private void validatePointForNullity(Point point) {
 
 		if (point == null) {
@@ -79,6 +125,11 @@ public class PointService {
 		}
 	}
 
+	/**
+	 * Valida se, para o ponto nao-nulo informado, ambas as coordenadas sao
+	 * nao-nulas. Desconsidera sinal ou se sao inteiras/decimais
+	 * 
+	 */
 	private void validatePointCoordinates(Point point) {
 
 		if (point != null && (point.getxCoordinate() == null || point.getyCoordinate() == null)) {
@@ -86,6 +137,11 @@ public class PointService {
 		}
 	}
 
+	/**
+	 * Invoca todas Bean validations da entidade {@link Point}, lancando uma
+	 * {@link ValidationException} com as violacoes encontradas
+	 * 
+	 */
 	private void validatePointConstraints(Point point) {
 		Set<ConstraintViolation<Point>> constraintViolations = validator.validate(point);
 

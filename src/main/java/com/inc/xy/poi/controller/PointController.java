@@ -23,6 +23,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+/**
+ * Expoe os servicos relacionados a Pontos de Interesse
+ * 
+ * @author Michel F. Suzigan
+ *
+ */
 @Api(tags = { "Pontos de Interesse" })
 @RestController
 @RequestMapping("/points")
@@ -31,6 +37,12 @@ public class PointController {
 	@Autowired
 	private PointService service;
 
+	/**
+	 * Consulta um ponto de interesse com base em um identificador
+	 * 
+	 * @param id
+	 *            Identificador do ponto de interesse
+	 */
 	@ApiOperation(value = "Consulta por identificador", notes = "Consulta um ponto de interesse com base em um identificador")
 	@SelfLink(controllerIdMethodName = "findById", entityIdMethodName = "getPid")
 	@RequestMapping(method = RequestMethod.GET, path = "/{id}")
@@ -38,6 +50,15 @@ public class PointController {
 		return service.findById(id);
 	}
 
+	/**
+	 * Consulta 1. se nenhum parametro for informado, todos os pontos de
+	 * interesses cadastrados ou 2. caso contrario, aqueles dentro da
+	 * circunferencia com centro e distancia informados.
+	 * 
+	 * @param xCenterCoordinate
+	 *            Coordenada X do centro da circunferencia
+	 * @param yCenterCoordinate
+	 */
 	@ApiOperation(value = "Consulta", notes = "Consulta todos os pontos de interesses cadastrados ou aqueles dentro de um raio de abrangência com base nos parâmetros informados")
 	@SelfLink(controllerIdMethodName = "findById", entityIdMethodName = "getPid")
 	@RequestMapping(method = RequestMethod.GET)
@@ -54,6 +75,12 @@ public class PointController {
 		}
 	}
 
+	/**
+	 * Cadastra um ponto de interesse valido
+	 * 
+	 * @param point
+	 *            Ponto de interesse valido
+	 */
 	@ApiOperation(value = "Cadastro", notes = "Cadastra um ponto de interesse")
 	@SelfLink(controllerIdMethodName = "findById", entityIdMethodName = "getPid")
 	@RequestMapping(method = RequestMethod.POST)
@@ -62,6 +89,12 @@ public class PointController {
 		return service.save(point);
 	}
 
+	/**
+	 * Exclui um ponto de interesse
+	 * 
+	 * @param id
+	 *            Identificador do ponto de interesse
+	 */
 	@ApiOperation(value = "Exclusão", notes = "Exclui um ponto de interesse")
 	@RequestMapping(method = RequestMethod.DELETE, path = "/{id}")
 	public void delete(@ApiParam("Identificador de um ponto de interesse") @PathVariable(name = "id") Long id) {

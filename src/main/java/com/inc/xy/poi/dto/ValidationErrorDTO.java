@@ -7,6 +7,13 @@ import org.springframework.validation.FieldError;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+/**
+ * Objeto auxiliar para transporte entre camadas erros de validacao (mensagem e
+ * valor invalido)
+ * 
+ * @author Michel F. Suzigan
+ *
+ */
 @JsonInclude(Include.NON_NULL)
 public class ValidationErrorDTO {
 	private String message;
@@ -23,6 +30,10 @@ public class ValidationErrorDTO {
 		this.message = message;
 	}
 
+	/**
+	 * Construtor utilitario
+	 * 
+	 */
 	public ValidationErrorDTO(FieldError fieldError) {
 
 		if (fieldError != null) {
@@ -31,6 +42,10 @@ public class ValidationErrorDTO {
 		}
 	}
 
+	/**
+	 * Construtor utilitario
+	 * 
+	 */
 	public ValidationErrorDTO(ConstraintViolation<?> constraintViolation) {
 
 		if (constraintViolation != null) {

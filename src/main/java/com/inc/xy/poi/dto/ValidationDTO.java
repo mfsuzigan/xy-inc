@@ -3,6 +3,12 @@ package com.inc.xy.poi.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Objeto auxiliar para transporte entre camadas de informacoes de validacao
+ * 
+ * @author Michel F. Suzigan
+ *
+ */
 public class ValidationDTO {
 
 	private List<ValidationErrorDTO> validationErrors;

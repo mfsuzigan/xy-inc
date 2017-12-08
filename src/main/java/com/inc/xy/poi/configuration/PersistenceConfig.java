@@ -17,6 +17,14 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * Configura a persistencia para aplicacao (MySql 5). Foi escolhida a opcao para
+ * atualizacao (e criacao, na primeira inicializacao) automatica do DDL da
+ * aplicacao
+ * 
+ * @author Michel F. Suzigan
+ *
+ */
 @Configuration
 @EnableTransactionManagement
 public class PersistenceConfig {
