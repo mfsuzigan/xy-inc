@@ -25,6 +25,12 @@ import com.inc.xy.poi.model.Point;
 import com.inc.xy.poi.repository.PointRepository;
 import com.inc.xy.poi.util.MessageUtils;
 
+/**
+ * Testes unitarios para a camada de negocio das operacoes de {@link Point}
+ * 
+ * @author Michel F. Suzigan
+ *
+ */
 public class PointServiceTest {
 
 	@InjectMocks
