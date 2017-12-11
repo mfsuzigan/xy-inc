@@ -1,10 +1,10 @@
-version: '3'
+version: '2'
 services:
     poi:
         build:
-            dockerfile: ./poi.dockerfile
+            dockerfile: ./poi_local.dockerfile
             context: .
-        image: mfsuzigan/poi
+        image: mfsuzigan/poi_local
         container_name: poi
         ports:
             - "8080:8080"

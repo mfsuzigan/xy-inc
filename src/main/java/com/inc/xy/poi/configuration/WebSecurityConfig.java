@@ -14,7 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * <br/>
  * Observacao: a protecao contra CSRF foi desabilitada para efeito de
  * simplicidade na implementacao
- * 
+ *
  * @author Michel F. Suzigan
  *
  */
